@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "65c2a565-c71b-49d6-a8c6-83323d25b89f",
+		"name": "AdidasChallengeSubscription",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public - Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"type": "text",
+						"value": "{{xsrf-token}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"fidel.2garbajosa@gmail.com\",\n    \"password\" : \"fidel\",\n    \"firstName\" : \"fidel\",\n    \"gender\" : \"M\",\n    \"dateOfBirth\" : \"19690315\",\n    \"flagOfConsent\" : \"Y\",\n    \"idCampaign\" : 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "publicserviceserver:8080/public/service/subscription",
+					"host": [
+						"publicserviceserver"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"service",
+						"subscription"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public - MySubscription",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"xsrf-token\", decodeURIComponent(pm.cookies.get(\"XSRF-TOKEN\")))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"fidel.2garbajosa@gmail.com\",\n    \"password\" : \"fidel\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "publicserviceserver:8080/public/service/mySubscription",
+					"host": [
+						"publicserviceserver"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"service",
+						"mySubscription"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public - AllSubscriptions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"xsrf-token\", decodeURIComponent(pm.cookies.get(\"XSRF-TOKEN\")))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "publicserviceserver:8080/public/service/allSubscriptions",
+					"host": [
+						"publicserviceserver"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"service",
+						"allSubscriptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Public - Cancel",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"xsrf-token\", decodeURIComponent(pm.cookies.get(\"XSRF-TOKEN\")))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-XSRF-TOKEN",
+						"value": "{{xsrf-token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\" : \"fidel.2garbajosa@gmail.com\",\n    \"password\" : \"fidel\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "publicserviceserver:8080/public/service/cancel",
+					"host": [
+						"publicserviceserver"
+					],
+					"port": "8080",
+					"path": [
+						"public",
+						"service",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

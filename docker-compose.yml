@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+      
+  publicserviceserver:
+    image: public:latest
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_HOST: mysqlserver
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: adidasChallengeDb
+    depends_on:
+      - "mysqlserver"
+      
+  subscriptionserviceserver:
+    image: subscription:latest
+    ports:
+      - 8081:8081
+    environment:
+      MYSQL_HOST: mysqlserver
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: adidasChallengeDb
+    depends_on:
+      - "mysqlserver"
+
+  emailserviceserver:
+    image: email:latest
+    ports:
+      - 8082:8082
+    environment:
+      MYSQL_HOST: mysqlserver
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: adidasChallengeDb
+    depends_on:
+      - "mysqlserver"
+
+  mysqlserver:
+    image: mysql:8.0.23      
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adidasChallengeDb  
+      MYSQL_ROOT_HOST: '%'
