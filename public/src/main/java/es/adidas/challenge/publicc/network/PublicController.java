@@ -1,19 +1,26 @@
 package es.adidas.challenge.publicc.network;
 
-import es.adidas.challenge.publicc.network.PublicControllerRequests.*;
+import es.adidas.challenge.publicc.network.PublicControllerRequests.AdminOrderValidationRequest;
+import es.adidas.challenge.publicc.network.PublicControllerRequests.NewSubscriptionRequest;
+import es.adidas.challenge.publicc.network.PublicControllerRequests.UserOrderValidationRequest;
 import es.adidas.challenge.publicc.network.PublicControllerResponses.AllSubscriptionsActionResponse;
 import es.adidas.challenge.publicc.network.PublicControllerResponses.SubscriptionActionResponse;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.Valid;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.Set;
 
 
 @RestController
@@ -49,7 +56,16 @@ public class PublicController {
     private String urlSubscriptionSignin;
 
     @PostMapping("/subscription")
-    ResponseEntity<SubscriptionActionResponse> create(@Valid @RequestBody NewSubscriptionRequest newSubscriptionRequest, BindingResult bindingResult) {
+    ResponseEntity<SubscriptionActionResponse> create(@RequestBody NewSubscriptionRequest newSubscriptionRequest) {
+
+        // Validate parameters
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<NewSubscriptionRequest>> validated = validator.validate(newSubscriptionRequest);
+        if (!validator.validate(newSubscriptionRequest).isEmpty()) {
+            return new ResponseEntity<>(new SubscriptionActionResponse("Bad parameters"), HttpStatus.BAD_REQUEST);
+        }
 
         // Create Subscription from subscription service
 
@@ -63,20 +79,33 @@ public class PublicController {
 
         HttpEntity<NewSubscriptionRequest> httpSubscriptionEntity = new HttpEntity<>(newSubscriptionRequest, requestSubscriptionHeaders);
 
-        ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
-                urlSubscriptionCreate,
-                HttpMethod.POST,
-                httpSubscriptionEntity,
-                SubscriptionActionResponse.class);
+        try {
+            ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
+                    urlSubscriptionCreate,
+                    HttpMethod.POST,
+                    httpSubscriptionEntity,
+                    SubscriptionActionResponse.class);
 
-        SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
+            SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
 
-        return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
+            return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
+        }
+        catch(HttpClientErrorException httpClientErrorException){
+            return new ResponseEntity<>(new SubscriptionActionResponse("Email address already registered"), HttpStatus.BAD_REQUEST);
+        }
     }
-
 
     @DeleteMapping("/cancel")
     ResponseEntity<SubscriptionActionResponse> cancel(@RequestBody UserOrderValidationRequest userOrderValidationRequest) {
+
+        // Validate parameters
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<UserOrderValidationRequest>> validated = validator.validate(userOrderValidationRequest);
+        if (!validator.validate(userOrderValidationRequest).isEmpty()) {
+            return new ResponseEntity<>(new SubscriptionActionResponse("Bad parameters"), HttpStatus.BAD_REQUEST);
+        }
 
         // Cancel Subscription from subscription service
 
@@ -90,20 +119,33 @@ public class PublicController {
 
         HttpEntity<UserOrderValidationRequest> httpSubscriptionEntity = new HttpEntity<>(userOrderValidationRequest, requestSubscriptionHeaders);
 
-        ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
-                urlSubscriptionCancel,
-                HttpMethod.DELETE,
-                httpSubscriptionEntity,
-                SubscriptionActionResponse.class);
+        try {
+            ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
+                    urlSubscriptionCancel,
+                    HttpMethod.DELETE,
+                    httpSubscriptionEntity,
+                    SubscriptionActionResponse.class);
 
-        SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
+            SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
 
-        return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
-
+            return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
+        }
+        catch(HttpClientErrorException httpClientErrorException){
+            return new ResponseEntity<>(new SubscriptionActionResponse("Email address not registered"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/mySubscription")
     ResponseEntity<SubscriptionActionResponse> getByEmailAndPassword(@RequestBody UserOrderValidationRequest userOrderValidationRequest) {
+
+        // Validate parameters
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<UserOrderValidationRequest>> validated = validator.validate(userOrderValidationRequest);
+        if (!validator.validate(userOrderValidationRequest).isEmpty()) {
+            return new ResponseEntity<>(new SubscriptionActionResponse("Bad parameters"), HttpStatus.BAD_REQUEST);
+        }
 
         // Get MySubscription from subscription service
 
@@ -117,24 +159,39 @@ public class PublicController {
 
         HttpEntity<UserOrderValidationRequest> httpSubscriptionEntity = new HttpEntity<>(userOrderValidationRequest, requestSubscriptionHeaders);
 
-        ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
-                urlSubscriptionMySubscription,
-                HttpMethod.POST,
-                httpSubscriptionEntity,
-                SubscriptionActionResponse.class);
+        try {
+            ResponseEntity<SubscriptionActionResponse> responseSubscription = restTemplate.exchange(
+                    urlSubscriptionMySubscription,
+                    HttpMethod.POST,
+                    httpSubscriptionEntity,
+                    SubscriptionActionResponse.class);
 
-        SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
+            SubscriptionActionResponse subscriptionActionResponse = responseSubscription.getBody();
 
-        return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
-
+            return new ResponseEntity<>(subscriptionActionResponse, responseSubscription.getStatusCode());
+        }
+        catch(HttpClientErrorException httpClientErrorException){
+            return new ResponseEntity<>(new SubscriptionActionResponse("Email address not registered"), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/allSubscriptions")
     ResponseEntity<AllSubscriptionsActionResponse> findAll(@RequestBody AdminOrderValidationRequest adminOrderValidationRequest) {
 
+        // Validate parameters
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<AdminOrderValidationRequest>> validated = validator.validate(adminOrderValidationRequest);
+        if (!validator.validate(adminOrderValidationRequest).isEmpty()) {
+            return new ResponseEntity<>(new AllSubscriptionsActionResponse("Bad parameters"), HttpStatus.BAD_REQUEST);
+        }
+
         // Get MySubscription from subscription service
 
         RestTemplate restTemplate = new RestTemplate();
+
+        // Set headers for restTemplate call
 
         // Set headers for restTemplate call
 
@@ -158,59 +215,16 @@ public class PublicController {
 
     private HttpHeaders setHeaders() {
 
-        // Get csrf cookie first
-
-        String csrfToken = getCsrfToken();
-
-        // Get Authentification token
-
-        String jwebToken = getAuthentificationToken(csrfToken);
+        String auth = adminUser + ":" + adminPassword;
+        String encodedAuth = new String(Base64.encodeBase64(
+                auth.getBytes(Charset.forName("US-ASCII"))));
 
         HttpHeaders requestSubscriptionHeaders = new HttpHeaders();
 
         requestSubscriptionHeaders.setContentType(MediaType.APPLICATION_JSON);
         requestSubscriptionHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        requestSubscriptionHeaders.set("Authorization", "Bearer " + jwebToken);
-        requestSubscriptionHeaders.set("X-XSRF-TOKEN", csrfToken);
-        requestSubscriptionHeaders.set("Cookie", "XSRF-TOKEN=" + csrfToken);
+        requestSubscriptionHeaders.set("Authorization", "Basic " + encodedAuth);
 
         return requestSubscriptionHeaders;
     }
-
-    private String getCsrfToken() {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders requestCsrfHeaders = new HttpHeaders();
-        requestCsrfHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestCsrfHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> httpCsrfEntity = new HttpEntity<>(requestCsrfHeaders);
-        ResponseEntity<String> response = restTemplate.exchange(urlSubscriptionCsrf, HttpMethod.GET
-                , httpCsrfEntity, String.class);
-
-        String cookieValueCsrf =  Optional.ofNullable(response.getHeaders().getFirst(HttpHeaders.SET_COOKIE)).orElse("");
-
-        cookieValueCsrf = cookieValueCsrf.replace("XSRF-TOKEN=", "");
-        return cookieValueCsrf.split(";")[0];
-    }
-
-    private String getAuthentificationToken(String csrfToken) {
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders requestAuthHeaders = new HttpHeaders();
-        requestAuthHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestAuthHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        requestAuthHeaders.set("X-XSRF-TOKEN", csrfToken);
-        requestAuthHeaders.set("Cookie", "XSRF-TOKEN=" + csrfToken);
-
-        SignInRequest signInRequest = new SignInRequest(adminUser, adminPassword);
-
-        HttpEntity<SignInRequest> httpAuthEntity = new HttpEntity<>(signInRequest, requestAuthHeaders);
-        HttpEntity<JwtResponse> responseAdminIdentification = restTemplate.exchange(urlSubscriptionSignin, HttpMethod.POST, httpAuthEntity, JwtResponse.class);
-
-
-        return Objects.requireNonNull(responseAdminIdentification.getBody()).getAccessToken();
-    }
-
 }

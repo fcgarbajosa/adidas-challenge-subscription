@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "SUBSCRIPTION")
 public class Subscription {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
@@ -31,11 +31,11 @@ public class Subscription {
     @Column(nullable = false)
     private String flagOfConsent;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
     private Long idCampaign;
 
-    public Subscription(@NotBlank @NotNull(message = "Email cannot be null") String email, @NotBlank @NotNull(message = "Password cannot be null") String password, String firstName, String gender, @NotBlank @NotNull(message = "dateOfBirth cannot be null") String dateOfBirth, @NotBlank @NotNull(message = "flagOfConsent cannot be null") String flagOfConsent, @NotBlank @NotNull(message = "idCampaign cannot be null") Long idCampaign) {
+    public Subscription(@NotBlank @NotNull(message = "Email cannot be null") String email, String password, String firstName, String gender, String dateOfBirth, String flagOfConsent, Long idCampaign) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;

@@ -5,8 +5,8 @@ import javax.validation.constraints.NotBlank;
 
 public class UserEmailRequest {
 
-    @Email
     @NotBlank
+    @Email
     String emailAddress;
 
     public UserEmailRequest(String emailAddress) {

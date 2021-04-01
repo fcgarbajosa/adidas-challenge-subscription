@@ -1,6 +1,7 @@
 package es.adidas.challenge.publicc.network.PublicControllerResponses;
 
-import javax.persistence.Column;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class SubscriptionResponse {
@@ -9,25 +10,22 @@ public class SubscriptionResponse {
     private Long id;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
-    @Column(nullable = false)
     private String password;
 
     private String firstName;
     private String gender;
 
     @NotBlank
-    @Column(nullable = false)
     private String dateOfBirth;
 
     @NotBlank
-    @Column(nullable = false)
     private String flagOfConsent;
 
     @NotBlank
-    @Column(nullable = false)
     private Long idCampaign;
 
     public SubscriptionResponse(@NotBlank Long id, @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotBlank String dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
@@ -44,6 +42,15 @@ public class SubscriptionResponse {
     public SubscriptionResponse(){
 
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }

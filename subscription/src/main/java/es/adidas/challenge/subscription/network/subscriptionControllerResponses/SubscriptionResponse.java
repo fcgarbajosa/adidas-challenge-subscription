@@ -45,6 +45,14 @@ public class SubscriptionResponse {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -93,9 +101,7 @@ public class SubscriptionResponse {
         this.flagOfConsent = flagOfConsent;
     }
 
-    public Long getIdCampaign() {
-        return idCampaign;
-    }
+    public Long getIdCampaign() { return idCampaign; }
 
     public void setIdCampaign(Long idCampaign) {
         this.idCampaign = idCampaign;

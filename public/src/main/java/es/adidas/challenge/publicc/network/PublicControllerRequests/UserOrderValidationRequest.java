@@ -5,15 +5,14 @@ import javax.validation.constraints.NotBlank;
 
 public class UserOrderValidationRequest {
 
-    @Email
     @NotBlank
+    @Email
     String email;
 
-    @Email
     @NotBlank
     String password;
 
-    public UserOrderValidationRequest(String email, String password) {
+    public UserOrderValidationRequest(@NotBlank @Email String email, @NotBlank String password) {
         this.email = email;
         this.password = password;
     }

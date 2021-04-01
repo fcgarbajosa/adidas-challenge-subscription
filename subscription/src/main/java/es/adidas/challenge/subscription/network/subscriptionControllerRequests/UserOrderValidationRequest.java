@@ -6,14 +6,14 @@ import javax.validation.constraints.NotNull;
 
 public class UserOrderValidationRequest {
 
-    @Email
     @NotBlank
+    @Email
     String email;
 
     @NotBlank
     String password;
 
-    public UserOrderValidationRequest(@Email @NotBlank String email, @NotBlank String password) {
+    public UserOrderValidationRequest(@NotBlank @Email String email, @NotBlank String password) {
         this.email = email;
         this.password = password;
     }

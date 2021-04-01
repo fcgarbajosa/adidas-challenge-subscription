@@ -1,13 +1,11 @@
 package es.adidas.challenge.subscription.network.subscriptionControllerRequests;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 public class NewSubscriptionRequest {
 
-    @Email
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank
@@ -22,7 +20,7 @@ public class NewSubscriptionRequest {
     @NotBlank
     private String flagOfConsent;
 
-    @NotBlank
+    @NotNull
     private Long idCampaign;
 
     public NewSubscriptionRequest(@Email @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotBlank String dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
