@@ -1,4 +1,4 @@
-package es.adidas.challenge.publicc.network.PublicControllerResponses;
+package es.adidas.challenge.publicc.network.publicControllerResponses;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ public class AllSubscriptionsActionResponse {
     public AllSubscriptionsActionResponse(String message) {
         this.message = message;
     }
+
     public String getMessage() {
         return message;
     }

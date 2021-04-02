@@ -1,4 +1,4 @@
-package es.adidas.challenge.publicc.network.PublicControllerRequests;
+package es.adidas.challenge.publicc.network.publicControllerRequests;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

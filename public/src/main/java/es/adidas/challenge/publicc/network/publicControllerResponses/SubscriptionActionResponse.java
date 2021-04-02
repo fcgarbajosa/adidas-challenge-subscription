@@ -1,6 +1,4 @@
-package es.adidas.challenge.publicc.network.PublicControllerResponses;
-
-
+package es.adidas.challenge.publicc.network.publicControllerResponses;
 
 public class SubscriptionActionResponse {
 
@@ -12,7 +10,7 @@ public class SubscriptionActionResponse {
         this.subscriptionResponse = subscription;
     }
 
-    public SubscriptionActionResponse(){
+    public SubscriptionActionResponse() {
 
     }
 

@@ -1,4 +1,4 @@
-package es.adidas.challenge.publicc.network.PublicControllerResponses;
+package es.adidas.challenge.publicc.network.publicControllerResponses;
 
 
 import javax.validation.constraints.Email;
@@ -39,7 +39,7 @@ public class SubscriptionResponse {
         this.idCampaign = idCampaign;
     }
 
-    public SubscriptionResponse(){
+    public SubscriptionResponse() {
 
     }
 

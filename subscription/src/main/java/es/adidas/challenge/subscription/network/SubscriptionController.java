@@ -2,6 +2,7 @@ package es.adidas.challenge.subscription.network;
 
 import es.adidas.challenge.subscription.business.SubscriptionService;
 import es.adidas.challenge.subscription.business.repositories.entities.Subscription;
+import es.adidas.challenge.subscription.network.services.EmailService;
 import es.adidas.challenge.subscription.network.subscriptionControllerRequests.AdminOrderValidationRequest;
 import es.adidas.challenge.subscription.network.subscriptionControllerRequests.NewSubscriptionRequest;
 import es.adidas.challenge.subscription.network.subscriptionControllerRequests.UserEmailRequest;
@@ -33,17 +34,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/subscription/service")
 public class SubscriptionController {
 
-    @Autowired
-    private SubscriptionService subscriptionService;
-
     @Value("${adminUser}")
     private String adminUser;
 
     @Value("${adminPassword}")
     private String adminPassword;
 
-    @Value("${urlEmailSend}")
-    private String urlEmailSend;
+    @Autowired
+    private SubscriptionService subscriptionService;
+
+    @Autowired
+    private EmailService emailService;
 
     private static final Logger log = LoggerFactory.getLogger(SubscriptionController.class);
 
@@ -87,34 +88,12 @@ public class SubscriptionController {
 
             // Send email
 
-            String sentEmail = sendEmail(storedSubscription.getEmail());
+            String sentEmail = emailService.sendEmail(storedSubscription.getEmail());
             log.info(sentEmail);
             return new ResponseEntity<>(new SubscriptionActionResponse("Subscription created", subscriptionResponse), HttpStatus.CREATED);
         } catch (Exception exception) {
             return new ResponseEntity<>(new SubscriptionActionResponse("Error. Mandatory parameter not sent"), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private String sendEmail(String emailAddress) {
-
-        // Get MySubscription from subscription service
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Set headers for restTemplate call
-
-        HttpHeaders requestEmailHeaders = setHeaders();
-
-        // Send email
-
-        UserEmailRequest userEmailRequest = new UserEmailRequest(emailAddress);
-        HttpEntity<UserEmailRequest> httpEmailEntity = new HttpEntity<>(userEmailRequest, requestEmailHeaders);
-
-        HttpEntity<String> responseEmailIdentification = restTemplate.exchange(urlEmailSend,
-                HttpMethod.POST,
-                httpEmailEntity,
-                String.class);
-        return responseEmailIdentification.getBody();
     }
 
     @DeleteMapping("/cancel")
@@ -202,20 +181,5 @@ public class SubscriptionController {
         } else {
             return new ResponseEntity<>(new AllSubscriptionsActionResponse("Error. Incorrect username or password"), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private HttpHeaders setHeaders() {
-
-        String auth = adminUser + ":" + adminPassword;
-        String encodedAuth = new String(Base64.encodeBase64(
-                auth.getBytes(Charset.forName("US-ASCII"))));
-
-        HttpHeaders requestSubscriptionHeaders = new HttpHeaders();
-
-        requestSubscriptionHeaders.setContentType(MediaType.APPLICATION_JSON);
-        requestSubscriptionHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        requestSubscriptionHeaders.set("Authorization", "Basic " + encodedAuth);
-
-        return requestSubscriptionHeaders;
     }
 }

@@ -1,6 +1,7 @@
 package es.adidas.challenge.subscription.network.subscriptionControllerRequests;
 
 import javax.validation.constraints.*;
+import java.util.Date;
 
 public class NewSubscriptionRequest {
 
@@ -14,8 +15,8 @@ public class NewSubscriptionRequest {
     private String firstName;
     private String gender;
 
-    @NotBlank
-    private String dateOfBirth;
+    @NotNull
+    private Date dateOfBirth;
 
     @NotBlank
     private String flagOfConsent;
@@ -23,7 +24,7 @@ public class NewSubscriptionRequest {
     @NotNull
     private Long idCampaign;
 
-    public NewSubscriptionRequest(@Email @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotBlank String dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
+    public NewSubscriptionRequest(@Email @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotNull Date dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -65,11 +66,11 @@ public class NewSubscriptionRequest {
         this.gender = gender;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

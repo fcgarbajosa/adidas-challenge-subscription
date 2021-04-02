@@ -1,7 +1,6 @@
-package es.adidas.challenge.publicc.network.PublicControllerRequests;
+package es.adidas.challenge.publicc.network.publicControllerRequests;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public class AdminOrderValidationRequest {
 

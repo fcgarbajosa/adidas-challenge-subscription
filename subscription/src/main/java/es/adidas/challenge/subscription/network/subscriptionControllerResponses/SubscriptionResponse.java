@@ -2,6 +2,8 @@ package es.adidas.challenge.subscription.network.subscriptionControllerResponses
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 public class SubscriptionResponse {
 
@@ -18,9 +20,9 @@ public class SubscriptionResponse {
     private String firstName;
     private String gender;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    private String dateOfBirth;
+    private Date dateOfBirth;
 
     @NotBlank
     @Column(nullable = false)
@@ -30,7 +32,7 @@ public class SubscriptionResponse {
     @Column(nullable = false)
     private Long idCampaign;
 
-    public SubscriptionResponse(@NotBlank Long id, @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotBlank String dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
+    public SubscriptionResponse(@NotBlank Long id, @NotBlank String email, @NotBlank String password, String firstName, String gender, @NotNull Date dateOfBirth, @NotBlank String flagOfConsent, @NotBlank Long idCampaign) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -85,11 +87,11 @@ public class SubscriptionResponse {
         this.gender = gender;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

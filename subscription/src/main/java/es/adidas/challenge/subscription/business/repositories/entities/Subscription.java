@@ -3,6 +3,7 @@ package es.adidas.challenge.subscription.business.repositories.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Entity
 @Table(name = "SUBSCRIPTION")
@@ -23,9 +24,9 @@ public class Subscription {
     private String firstName;
     private String gender;
 
-    @NotBlank
+    @NotNull
     @Column(nullable = false)
-    private String dateOfBirth;
+    private Date dateOfBirth;
 
     @NotBlank
     @Column(nullable = false)
@@ -35,7 +36,7 @@ public class Subscription {
     @Column(nullable = false)
     private Long idCampaign;
 
-    public Subscription(@NotBlank @NotNull(message = "Email cannot be null") String email, String password, String firstName, String gender, String dateOfBirth, String flagOfConsent, Long idCampaign) {
+    public Subscription(@NotBlank @NotNull(message = "Email cannot be null") String email, String password, String firstName, String gender, Date dateOfBirth, String flagOfConsent, Long idCampaign) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -88,11 +89,11 @@ public class Subscription {
         this.gender = gender;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

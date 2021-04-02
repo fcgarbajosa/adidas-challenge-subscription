@@ -1,4 +1,4 @@
-package es.adidas.challenge.publicc.network.PublicControllerResponses;
+package es.adidas.challenge.publicc.network.publicControllerResponses;
 
 public class MessageResponse {
     private String message;
